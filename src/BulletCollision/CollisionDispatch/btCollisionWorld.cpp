@@ -17,6 +17,7 @@ subject to the following restrictions:
 #include "btCollisionDispatcher.h"
 #include "BulletCollision/CollisionDispatch/btCollisionObject.h"
 #include "BulletCollision/CollisionShapes/btCollisionShape.h"
+#include "BulletCollision/CollisionShapes/btConvex2dShape.h"
 #include "BulletCollision/CollisionShapes/btConvexShape.h"
 #include "BulletCollision/NarrowPhaseCollision/btGjkEpaPenetrationDepthSolver.h"
 #include "BulletCollision/CollisionShapes/btSphereShape.h"                 //for raycasting
@@ -1317,6 +1318,12 @@ void btCollisionWorld::debugDrawObject(const btTransform& worldTransform, const 
 			const btCollisionShape* colShape = compoundShape->getChildShape(i);
 			debugDrawObject(worldTransform * childTrans, colShape, color);
 		}
+	}
+	else if (shape->getShapeType() == CONVEX_2D_SHAPE_PROXYTYPE)
+	{
+		const btConvex2dShape* convex2dShape = static_cast<const btConvex2dShape*>(shape);
+		const btCollisionShape* childShape = convex2dShape->getChildShape();
+		debugDrawObject(worldTransform, childShape, color);
 	}
 	else
 	{
